@@ -1,0 +1,481 @@
+<style>
+  /* Reset  */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  /* Variables */
+  :root {
+    --main-dark-bg: #18181b; /* Body background, Top bar background */
+    --primary-text-color: #f4f4f5; /* Primary text, Active tab button text, Regenerate button text (explicit white is #ffffff), Control button hover text, Range slider thumb border, Warning text strong (partially for off-white) */
+    --secondary-dark-bg: #27272a; /* Scrollbar track, Sidebars background, Main tabs background, Image grid placeholder, Seed input background */
+    --ui-gray-border: #52525b; /* Scrollbar thumb, Control button border, Seed input border, Control button hover background */
+    --ui-gray-hover: #71717a; /* Scrollbar thumb hover */
+    --component-bg-border: #3f3f46; /* Sidebar borders, Top bar border, Active tab button background, Prompt area container border, Prompt controls border top, Guidance range input track, Thumbnail image container background, Gallery HR separator */
+    --secondary-text-color: #a1a1aa; /* Chevron icon, Default tab button text, History header icon, History item span, Thumbnail name, Control button text, Seed input text */
+    --main-content-bg: #1c1c1f; /* Main content background */
+    --logo-gradient-purple: #8b5cf6; /* Logo gradient start */
+    --accent-blue: #3b82f6; /* Logo gradient end, Range slider thumb, Regenerate button background, Gallery warning icon (users) */
+    --prompt-bar-backdrop: rgba(40, 40, 42, 0.7); /* Prompt area container background (transparent dark) */
+    --accent-blue-hover: #2563eb; /* Regenerate button hover background */
+    --warning-red: #ef4444; /* Gallery warning text (immediate ban), Gallery warning icon (ban) */
+    --warning-yellow: #facc15; /* Gallery warning icon (triangle exclamation) */
+    --pure-white-text: #ffffff; /* Explicit white text (e.g., in warning list for "more than 10 images") */
+    --selection-border-blue: #60a5fa; /* Selected thumbnail border */
+  }
+</style>
+
+<app-container>
+  <left-sidebar>
+    
+  </left-sidebar>
+  <main-content>
+    
+  </main-content>
+  <right-sidebar>
+    
+  </right-sidebar>
+</app-container>
+<!-- <script>
+  class AppContainer extends HTMLElement {
+    connectedCallback() {
+      this.innerHTML = 
+  }}
+</script> -->
+<script>
+    const container = document.getElementById("dropdown-container"); // where you'll inject all dropdowns
+    
+    dropdownConfig.forEach(({ label, icon, id, options, optgroups }) => {
+      const div = document.createElement("div");
+      div.className = "import-selector";
+    
+      const labelEl = document.createElement("label");
+      labelEl.className = "import-label";
+      labelEl.innerHTML = `<i class="fa-solid ${icon}"></i> ${label}`;
+      div.appendChild(labelEl);
+    
+      const select = document.createElement("select");
+      select.className = "import-dropdown";
+      select.id = id;
+      select.setAttribute("onchange", "updateCombinedPrompt()");
+    
+      if (typeof options === "string") {
+        select.innerHTML = options; // raw HTML placeholder like [urvSpecies]
+      } else if (options) {
+        options.forEach(opt => {
+          const option = document.createElement("option");
+          option.value = opt.value;
+          option.textContent = opt.text;
+          select.appendChild(option);
+        });
+      } else if (optgroups) {
+        optgroups.forEach(group => {
+          const optgroup = document.createElement("optgroup");
+          optgroup.label = group.label;
+          group.options.forEach(opt => {
+            const option = document.createElement("option");
+            option.value = opt.value;
+            option.textContent = opt.text;
+            optgroup.appendChild(option);
+          });
+          select.appendChild(optgroup);
+        });
+      }
+  
+      div.appendChild(select);
+      container.appendChild(div);
+    });
+    
+    const dropdownConfig = [
+      {
+        label: "Species",
+        icon: "fa-dragon",
+        id: "species",
+        options: "[urvSpecies]" // Placeholder, will inject dynamically
+      },
+      {
+        label: "Ethnicity",
+        icon: "fa-users-viewfinder",
+        id: "ethnicity",
+        options: "[urvEthnicity]"
+      },
+      {
+        label: "Gender",
+        icon: "fa-venus-mars",
+        id: "gender",
+        options: [
+          { value: "", text: "Default" },
+          { value: "A male character with masculine traits", text: "Male" },
+          { value: "A female character with feminine traits", text: "Female" }
+        ]
+      },
+      {
+        label: "Maturity",
+        icon: "fa-user-clock",
+        id: "maturity",
+        options: [
+          { value: "", text: "Default" },
+          { value: "(Subject Depiction: toddler, young child around 3 to 5 years old, chubby cheeks, small stature, playful expression)", text: "Toddler" },
+          { value: "(Subject Depiction: kid, child around 6 to 9 years old, round face, small hands, energetic posture)", text: "Kid" },
+          { value: "(Subject Depiction: pre-teen, around 10 to 12 years old, slightly elongated face, lean limbs, curious gaze)", text: "Pre-Teen" },
+          { value: "(Subject Depiction: teenager, around 13 to 17 years old, youthful facial structure, growing taller, expressive and emotional features)", text: "Teen" },
+          { value: "(Subject Depiction: young adult, around 18 to 25 years old, mature facial features, toned body, confident stance)", text: "Young Adult" },
+          { value: "(Subject Depiction: adult, around 26 to 39 years old, defined features, stable posture, full-grown physique)", text: "Adult" },
+          { value: "(Subject Depiction: middle-aged adult, around 40 to 59 years old, visible laugh lines, firm build with subtle signs of aging)", text: "Middle-Aged" },
+          { value: "(Subject Depiction: senior adult, around 60 to 75 years old, wrinkles, softer skin, slower posture, gray or thinning hair)", text: "Senior" },
+          { value: "(Subject Depiction: elder adult, over 75 years old, deep facial lines, hunched posture, fragile appearance, age-worn eyes)", text: "Elder" },
+          { value: "(Subject Depiction: ageless being, immortal appearance, timeless skin, ethereal expression, body defies aging or decay)", text: "Ageless Being" }
+        ]
+      },
+      {
+        label: "Persona",
+        icon: "fa-masks-theater",
+        id: "persona",
+        options: "[urvPersona]"
+      },
+      {
+        label: "Professions",
+        icon: "fa-user-astronaut",
+        id: "professions",
+        options: "[urvProfessions]"
+      },
+      {
+        label: "Hair Type?",
+        icon: "fa-circle-notch",
+        id: "hairType",
+        options: [
+          { value: "", text: "Default" },
+          { value: "smooth, straight hair", text: "Straight" },
+          { value: "loose, wavy hair", text: "Wavy" },
+          { value: "naturally curly hair", text: "Curly" },
+          { value: "messy hair", text: "Messy" },
+          { value: "spiked hair", text: "Spiked" }
+        ]
+      },
+      {
+        label: "Length?",
+        icon: "fa-wave-square",
+        id: "hairLength",
+        options: [
+          { value: "", text: "Normal" },
+          { value: "tomboy, very short hair", text: "Very Short Hair" },
+          { value: "short hair", text: "Short Hair" },
+          { value: "medium hair", text: "Medium Hair" },
+          { value: "long hair", text: "Long Hair" },
+          { value: "very long hair", text: "Very Long Hair" },
+          { value: "absurdly long hair", text: "Absurdly Long Hair" },
+          { value: "big hair", text: "Big Hair" },
+          { value: "bald head", text: "Bald" }
+        ]
+      },
+      {
+        label: "Hairstyle?",
+        icon: "fa-scissors",
+        id: "hairStyle",
+        optgroups: [
+          {
+            label: "♀️ 𝗙𝗲𝗺𝗶𝗻𝗶𝗻𝗲 𝗛𝗮𝗶𝗿𝘀𝘁𝘆𝗹𝗲𝘀",
+            options: [
+              { value: "afro hairstyle, voluminous curls", text: "Afro" },
+              { value: "bob cut hairstyle, short straight hair around jaw level", text: "Bob Cut" },
+              { value: "braided hairstyle, neat braids", text: "Braided" },
+              { value: "hair tied in a classic bun", text: "Bun" },
+              { value: "elegant low bun at the nape", text: "Chignon" },
+              { value: "fishtail braid hairstyle", text: "Fishtail Braid" },
+              { value: "french braid hairstyle", text: "French Braid" },
+              { value: "half updo hairstyle, top half tied, rest down", text: "Half Updo" },
+              { value: "layered hairstyle, soft layers for volume and flow", text: "Layered" },
+              { value: "messy bun, loose and casual style", text: "Messy Bun" },
+              { value: "pigtails hairstyle, two side ponytails", text: "Pigtails" },
+              { value: "pompadour hairstyle, swept up and back", text: "Pompadour" },
+              { value: "ponytail hairstyle, hair tied back", text: "Ponytail" },
+              { value: "side braid hairstyle, worn to one side", text: "Side Braid" },
+              { value: "twintails hairstyle, symmetrical ponytails", text: "Twintails" },
+              { value: "updo hairstyle, hair lifted off the neck", text: "Updo" }
+            ]
+          },
+          {
+            label: "♂️ 𝗠𝗮𝘀𝗰𝘂𝗹𝗶𝗻𝗲 𝗛𝗮𝗶𝗿𝘀𝘁𝘆𝗹𝗲𝘀",
+            options: [
+              { value: "afro hairstyle, thick natural curls", text: "Afro" },
+              { value: "caesar cut, short haircut with small fringe", text: "Caesar Cut" },
+              { value: "comma cut, soft wave shaping like a comma on forehead", text: "Comma Cut" },
+              { value: "crew cut, short and even all over", text: "Crew Cut" },
+              { value: "faux hawk, center strip styled upward", text: "Faux Hawk" },
+              { value: "hipster hairstyle, longer top with styled side part", text: "Hipster" },
+              { value: "ivy league haircut, neat side part with short sides", text: "Ivy League" },
+              { value: "pompadour hairstyle, voluminous and swept back", text: "Pompadour" },
+              { value: "quiff hairstyle, front hair lifted and voluminous", text: "Quiff" },
+              { value: "side part hairstyle, clearly defined side part", text: "Side Part" },
+              { value: "taper fade, smooth transition from short to longer hair", text: "Taper Fade" },
+              { value: "undercut hairstyle, very short sides, long top", text: "Undercut" }
+            ]
+          }
+        ]
+      },
+      {
+        label: "Hair Add?",
+        icon: "fa-plus",
+        id: "hairAdd",
+        options: [
+          { value: "", text: "Default" },
+          { value: "bangs", text: "Bangs" },
+          { value: "blunt bangs", text: "Blunt Bangs" },
+          { value: "hair between eyes", text: "Hair Between Eyes" },
+          { value: "hair over eyes", text: "Hair Over Eyes" },
+          { value: "hair over one eye", text: "Hair Over One Eye" },
+          { value: "parted bangs", text: "Parted Bangs" },
+          { value: "swept bangs", text: "Swept Bangs" },
+          { value: "driedlocks", text: "Driedlocks" },
+          { value: "sidelocks", text: "Sidelocks" },
+          { value: "ahoge", text: "Ahoge" },
+          { value: "heart ahoge", text: "Heart Ahoge" },
+          { value: "hair antenna", text: "Hair Antenna" },
+          { value: "hair pulled back", text: "Hair Pulled Back" },
+          { value: "hair slicked back", text: "Hair Slicked Back" }
+        ]
+      }
+    ];
+
+    const rawSidebarSections = [
+        {
+            title: "Styles",
+            type: "styles",
+            open: true, //open by default
+            items: [
+                "none", "realistic", "kodak_candid", "cinematic", "oil_painting", "anime", "cartoon", "pixel_art", "sketch", "watercolor"
+            ]
+        },
+        {
+            title: "Camera Angles",
+            type: "camera",
+            open: false, //closed by default
+            items: [
+                "closeup", "medium_shot", "wide_shot", "overhead", "dutch_angle"
+            ]
+        },
+        {
+            title: "Lighting",
+            type: "lighting",
+            open: false, //closed by default
+            items: [
+                "natural_light", "studio_light", "backlight", "neon_light", "candlelight"
+            ]
+        },
+        {
+            title: "Species",
+            type: "species",
+            open: false, //closed by default
+            items: [
+                "human", "elf", "dwarf", "orc", "cyborg", "angel", "demon", "robot", "alien"
+            ]
+        },
+        {
+            title: "Location",
+            type: "location",
+            open: false, //closed by default
+            items: [
+                "forest", "city", "beach", "mountains", "space", "desert", "underwater", "cave", "castle"
+            ]
+        }
+    ];
+
+    const sidebarSections = rawSidebarSections.map(section => ({
+        title: section.title,
+        icon: fa-chevron-right,
+        open: section.open,
+        items: section.items.map(name => ({
+            label: name
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, char => char.toUpperCase()), // Capitalize first letter of each word
+            image: [[`links.images.${section.type}_${name}`]] // Assuming links.images is defined elsewhere
+        }))
+
+    }));
+    // outpu will look like this:
+    // {
+    //     label: "Pixel Art",
+    //     image: [[links.images.style_pixel_art]]
+    // }
+    // Uncomment the following lines if you want to use the original sidebarSections array
+    // const sidebarSections = [
+    //     {
+    //         title: "Styles",
+    //         icon: "fa-chevron-right",
+    //         open: true, //open by default
+    //         items: [
+    //             { label: "No Style", image: [links.images.style_none] },
+    //             { label: "Realistic", image: [links.images.style_realistic] },
+    //             { label: "Kodak", image: [links.images.style_kodak_candid] },
+    //             { label: "Cinematic", image: [links.images.style_cinematic] },
+    //             { label: "Oil Painting", image: [links.images.style_oil_painting] },
+    //             { label: "Anime", image: [links.images.style_anime] },
+    //             { label: "Cartoon", image: [links.images.style_cartoon] },
+    //             { label: "Pixel Art", image: [links.images.style_pixel_art] },
+    //             { label: "Sketch", image: [links.images.style_sketch] },
+    //             { label: "Watercolor", image: [links.images.style_watercolor] }
+    //     ]
+    //     },
+    //     {
+    //         title: "Camera Angles",
+    //         icon: "fa-chevron-right",
+    //         open: false, //closed by default
+    //         items: [
+    //             { label: "Close-up", image: [links.images.camera_closeup] },
+    //             { label: "Medium Shot", image: [links.images.camera_medium_shot] },
+    //             { label: "Wide Shot", image: [links.images.camera_wide_shot] },
+    //             { label: "Overhead", image: [links.images.camera_overhead] },
+    //             { label: "Dutch Angle", image: [links.images.camera_dutch_angle] }
+    //     ]
+    //     },
+    //     {
+    //         title: "Lighting",
+    //         icon: "fa-chevron-right",
+    //         open: false, //closed by default
+    //         items: [
+    //             { label: "Natural Light", image: [links.images.lighting_natural] },
+    //             { label: "Studio Light", image: [links.images.lighting_studio] },
+    //             { label: "Backlight", image: [links.images.lighting_backlight] },
+    //             { label: "Neon Light", image: [links.images.lighting_neon] },
+    //             { label: "Candlelight", image: [links.images.lighting_candlelight] }
+    //     ]
+    //     },
+    //     {
+    //         title: "Species",
+    //         icon: "fa-chevron-right",
+    //         open: false, //closed by default
+    //         items: [
+    //             { label: "Human", image: [links.images.species_human] },
+    //             { label: "Elf", image: [links.images.species_elf] },
+    //             { label: "Dwarf", image: [links.images.species_dwarf] },
+    //             { label: "Orc", image: [links.images.species_orc] },
+    //             { label: "Cyborg", image: [links.images.species_cyborg] },
+    //             { label: "Angel", image: [links.images.species_angel] },
+    //             { label: "Demon", image: [links.images.species_demon] },
+    //             { label: "Robot", image: [links.images.species_robot] },
+    //             { label: "Alien", image: [links.images.species_alien] }
+    //     ]
+    //     },
+    //     {
+    //         title: "Location",
+    //         icon: "fa-chevron-right",
+    //         open: false, //closed by default
+    //         items: [
+    //             { label: "Forest", image: [links.images.location_forest] },
+    //             { label: "City", image: [links.images.location_city] },
+    //             { label: "Beach", image: [links.images.location_beach] },
+    //             { label: "Mountains", image: [links.images.location_mountains] },
+    //             { label: "Space", image: [links.images.location_space] },
+    //             { label: "Desert", image: [links.images.location_desert] },
+    //             { label: "Underwater", image: [links.images.location_underwater] },
+    //             { label: "Cave", image: [links.images.location_cave] },
+    //             { label: "Castle", image: [links.images.location_castle] }
+    //     ]
+    //     }
+    // ];
+    
+    function generateSidebar(sections) {
+        const sidebar = document.querySelector('.left-sidebar');
+
+        sidebar.innerHTML = ""; // Clear existing content
+
+        sections.forEach(section => {
+            const openClass = section.open ? "" : "hidden";
+            const rotatedClass = section.open ? "rotated" : "";
+
+            const sectionHTML = `
+                <div class="control-section">
+                    <div class="section-header">
+                        <h3>${section.title}</h3>
+                        <i class="fas ${section.icon} chevron ${rotatedClass}"></i>
+                    </div>
+                    <div class="section-content ${openClass}">
+                        <div class="thumbnail-grid">
+                            ${section.items.map((item, i) => `
+                                <div class="thumbnail-item${i === 0 && section.title === "Styles" ? " selected" : ""}" >
+                                    <div class="image-container">
+                                        <img src="${item.image}" alt="${item.label}" />
+                                    </div>
+                                    <span>${item.label}</span>
+                                </div>
+                            `).join("")}
+                        </div>
+                    </div>
+                </div>
+            `;
+            sidebar.insertAdjacentHTML("beforeend", sectionHTML);
+            
+        }
+    );
+    }
+
+    const promptConfig = {
+        species: { source: "species", map: true },
+        ethnicity: { source: "ethnicity", map: true },
+        gender: {},
+        maturity: {},
+        persona: { source: "persona", map: true },
+        professions: { source: "professions", map: true },
+        hairType: {},
+        hairLength: {},
+        hairStyle: {},
+        hairAdd: {},
+        hairColor: {},
+        eyesColor: {},
+        skinColor: {},
+        facial: {},
+        expression: { source: "expression", map: true },
+        bodyShape: { source: "bodyShape", map: true },
+        bodyBuild: {},
+        chestSize: {},
+        headWear: { source: "headWear", map: true },
+        topWear: { source: "topWear", map: true },
+        bottomWear: { source: "bottomWear", map: true },
+        footWear: { source: "footWear", map: true },
+        handsAcc: {},
+        hotWear: { source: "hotWear", map: true },
+        fantasyWear: { source: "fantasyWear", map: true },
+        traditionalWear: { source: "traditionalWear", map: true },
+        moreWear: { source: "moreWear", map: true },
+        moodAura: {},
+        location: { source: "location", map: true },
+        position: { source: "position", map: true },
+        angle: {},
+        frame: {},
+        shotType: {},
+        techniques: {},
+        clock: {},
+        weather: {},
+        effect: {},
+        lighting: {},
+        nsfwPrompt: {},
+    };
+
+    function updateCombinedPrompt() {
+      const combined = [];
+
+      for (const [id, { source = id, map = false }] of Object.entries(promptConfig)) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+
+        const value = el.value;
+        if (!value || !value.trim()) continue;
+
+        const mappedPrompt = map ? window[source]?.[value]?.prompt : value;
+        if (mappedPrompt && mappedPrompt.trim()) {
+          combined.push(mappedPrompt.trim());
+        }
+      }
+
+      window.combinedPrompt = combined.join(", ");
+    }
+
+</script>
+
+        // <div class="import-selector">
+        //   <label class="import-label"><i class="fa-solid fa-child"></i> Body Shapes</label>
+        //   <select class="import-dropdown" id="bodyShape" onchange="updateCombinedPrompt()">
+        //     [urvBodyShape]
+        //   </select>
+        // </div>
